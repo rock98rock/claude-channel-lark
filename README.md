@@ -24,10 +24,11 @@ Lark/Feishu channel plugin for Claude Code. Bridges Lark IM messages to your Cla
 2. Click **Create Custom App**
 3. Under **Capabilities** → enable **Bot**
 4. Under **Permissions & Scopes** → add:
-   - `im:message` — receive messages
-   - `im:message:send_as_bot` — send messages
-   - `im:resource` — access file/image resources
-   - `im:message.reactions:write` — add emoji reactions
+   - `im:message` — read and send direct messages and group chat messages
+   - `im:message:send_as_bot` — send messages as an app
+   - `im:message.group_msg:readonly` — obtain all messages in associated group chats
+   - `im:message.p2p_msg:readonly` — get direct messages sent to bot
+   - `im:resource` — read and upload images or other files
 5. Under **Event Subscriptions** → enable **Receive messages (im.message.receive_v1)**
 6. **Publish** the app (or request approval from your admin)
 7. Copy the **App ID** and **App Secret** from the Credentials page
