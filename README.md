@@ -36,13 +36,7 @@ Lark/Feishu channel plugin for Claude Code. Bridges Lark IM messages to your Cla
 ### 2. Install the Plugin
 
 ```bash
-claude plugin add /path/to/claude-channel-lark
-```
-
-Or if developing locally:
-
-```bash
-claude --dangerously-load-development-channels plugin:lark
+claude plugin add snsoft-my/lark-mcp-claude
 ```
 
 ### 3. Configure Credentials
