@@ -139,21 +139,34 @@ _BOT_OPEN_ID: str = ""
 
 
 def _resolve_bot_open_id() -> str:
-    """Get the bot's open_id via the Lark bot info API."""
-    try:
-        import lark_oapi as _lark
-        from lark_oapi.api.bot.v3 import GetBotInfoRequest
+    """Get the bot's open_id via the Lark bot info API (raw HTTP)."""
+    import urllib.request
 
-        req = GetBotInfoRequest.builder().build()
-        resp = api_client.bot.v3.bot_info.get(req)
-        if resp.success() and resp.data and resp.data.bot:
-            oid = getattr(resp.data.bot, "open_id", "") or ""
-            if oid:
-                logger.info("bot open_id resolved: %s", oid)
-                return oid
-        logger.warning(
-            "bot info API returned no open_id (code=%s)", getattr(resp, "code", "?")
+    base = (
+        "https://open.larksuite.com" if DOMAIN == "lark" else "https://open.feishu.cn"
+    )
+    try:
+        token_data = json.dumps({"app_id": APP_ID, "app_secret": APP_SECRET}).encode()
+        token_req = urllib.request.Request(
+            f"{base}/open-apis/auth/v3/tenant_access_token/internal",
+            data=token_data,
+            headers={"Content-Type": "application/json"},
         )
+        token_resp = json.loads(urllib.request.urlopen(token_req, timeout=10).read())
+        token = token_resp.get("tenant_access_token", "")
+        if not token:
+            logger.warning("failed to get tenant_access_token")
+            return ""
+        bot_req = urllib.request.Request(
+            f"{base}/open-apis/bot/v3/info",
+            headers={"Authorization": f"Bearer {token}"},
+        )
+        bot_resp = json.loads(urllib.request.urlopen(bot_req, timeout=10).read())
+        oid = bot_resp.get("bot", {}).get("open_id", "")
+        if oid:
+            logger.info("bot open_id resolved: %s", oid)
+            return oid
+        logger.warning("bot info API returned no open_id")
     except Exception:
         logger.warning(
             "failed to resolve bot open_id — group @mention filtering may not work"
