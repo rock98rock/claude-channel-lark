@@ -9,7 +9,7 @@
       "name": "lark",
       "source": "./plugins/lark",
       "description": "Lark/Feishu channel for Claude Code — receive and reply to Lark messages with threaded replies, running cards, emoji reactions, and file attachments. No public IP required (WebSocket mode).",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "author": {
         "name": "SNSoft",
         "url": "https://github.com/snsoft-my"
