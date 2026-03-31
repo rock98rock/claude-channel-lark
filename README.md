@@ -11,8 +11,7 @@ Lark/Feishu channel plugin for Claude Code. Bridges Lark IM messages to your Cla
 - "Working on it..." running card — immediate feedback, updated in-place with the final answer
 - Emoji reactions (OK on receive, DONE on reply)
 - File and image attachments (send and receive)
-- Allowlist access control
-- Permission relay (Allow/Deny buttons for tool approvals)
+- Access control via Lark app permissions
 - Retry with exponential backoff on API failures
 - Supports both international Lark and China Feishu
 
@@ -62,15 +61,9 @@ LARK_APP_ID=cli_xxx
 LARK_APP_SECRET=xxx
 ```
 
-### 5. Set Up Access (Optional)
-
-By default, all users can message the bot. To restrict:
-
-```
-/lark-access allow ou_xxxxxxxxxxxxx
-```
-
 Send a message to your bot in Lark — it should appear in your Claude Code session.
+
+> **Access control** is managed by the Lark app's own permissions — no separate allowlist needed.
 
 ## Message Flow
 
@@ -98,7 +91,6 @@ User sends message in Lark
 | Skill | Command | Description |
 |-------|---------|-------------|
 | lark-configure | `/lark-configure` | Save credentials and check status |
-| lark-access | `/lark-access` | Manage allowlist and ack settings |
 
 ## Architecture
 
