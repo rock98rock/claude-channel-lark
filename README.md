@@ -52,8 +52,12 @@ LARK_APP_SECRET=xxx
 ### 4. Launch
 
 ```bash
-claude --channels plugin lark@lark-mcp-claude
+claude --dangerously-load-development-channels plugin:lark@lark-mcp-claude
 ```
+
+> **Note:** The `--dangerously-load-development-channels` flag is required for community plugins.
+> Once the plugin is listed in the official Claude plugins directory, you can use
+> `claude --channels plugin lark@lark-mcp-claude` instead.
 
 Send a message to your bot in Lark — it should appear in your Claude Code session.
 
