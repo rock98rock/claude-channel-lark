@@ -10,7 +10,7 @@ allowed-tools:
   - Bash(chmod *)
 ---
 
-# /lark:configure — Lark Channel Setup
+# /lark-configure — Lark Channel Setup
 
 Writes the Lark app credentials to `~/.claude/channels/lark/.env` and orients the
 user on access policy. The server reads the .env file at boot.
@@ -37,7 +37,7 @@ Read both state files and give the user a complete picture:
 3. **Next steps** — guide based on what's missing:
    - No credentials → show how to create a Lark Custom Bot
    - No access.json → it will be created automatically on first message
-   - Everything set → show how to launch: `claude --channels plugin:lark`
+   - Everything set → show how to launch: `claude --channels plugin lark@lark-mcp-claude`
 
 ### With arguments — save credentials
 
@@ -83,7 +83,7 @@ If the user needs to create a new Lark app, provide these instructions:
 5. Under **Event Subscriptions** → enable **Receive messages** (`im.message.receive_v1`)
 6. **Publish** the app (or request admin approval)
 7. Copy the **App ID** and **App Secret** from the Credentials page
-8. Run: `/lark:configure <app_id> <app_secret>`
+8. Run: `/lark-configure <app_id> <app_secret>`
 
 ### For China Feishu users
 

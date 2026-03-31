@@ -41,12 +41,18 @@ Inside a Claude Code session:
 2. Add the marketplace: `/plugin marketplace add snsoft-my/lark-mcp-claude`
 3. Install the plugin: `/plugin install lark@lark-mcp-claude`
 
-### 3. Configure Credentials
+### 3. Launch
 
-Run inside Claude Code:
+```bash
+claude --channels plugin lark@lark-mcp-claude
+```
+
+### 4. Configure Credentials
+
+Inside the Claude Code session, run:
 
 ```
-/lark:configure <app_id> <app_secret>
+/lark-configure <app_id> <app_secret>
 ```
 
 Or manually create `~/.claude/channels/lark/.env`:
@@ -56,18 +62,12 @@ LARK_APP_ID=cli_xxx
 LARK_APP_SECRET=xxx
 ```
 
-### 4. Set Up Access (Optional)
+### 5. Set Up Access (Optional)
 
 By default, all users can message the bot. To restrict:
 
 ```
-/lark:access allow ou_xxxxxxxxxxxxx
-```
-
-### 5. Launch
-
-```bash
-claude --channels plugin:lark
+/lark-access allow ou_xxxxxxxxxxxxx
 ```
 
 Send a message to your bot in Lark — it should appear in your Claude Code session.
@@ -97,8 +97,8 @@ User sends message in Lark
 
 | Skill | Command | Description |
 |-------|---------|-------------|
-| configure | `/lark:configure` | Save credentials and check status |
-| access | `/lark:access` | Manage allowlist and ack settings |
+| lark-configure | `/lark-configure` | Save credentials and check status |
+| lark-access | `/lark-access` | Manage allowlist and ack settings |
 
 ## Architecture
 
