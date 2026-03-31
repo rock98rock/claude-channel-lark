@@ -11,6 +11,7 @@ Lark/Feishu channel plugin for Claude Code. Bridges Lark IM messages to your Cla
 - "Working on it..." running card — immediate feedback, updated in-place with the final answer
 - Emoji reactions (OK on receive, DONE on reply)
 - File and image attachments (send and receive)
+- Group chat support — responds only when @mentioned
 - Access control via Lark app permissions
 - Retry with exponential backoff on API failures
 - Supports both international Lark and China Feishu
@@ -36,39 +37,34 @@ Lark/Feishu channel plugin for Claude Code. Bridges Lark IM messages to your Cla
 
 Inside a Claude Code session:
 
-1. Open the plugin manager: `/plugin`
-2. Add the marketplace: `/plugin marketplace add snsoft-my/lark-mcp-claude`
-3. Install the plugin: `/plugin install lark@lark-mcp-claude`
+1. Add the marketplace: `/plugin marketplace add snsoft-my/lark-mcp-claude`
+2. Install the plugin: `/plugin install lark@lark-mcp-claude`
 
-### 3. Launch
+### 3. Configure Credentials
 
-```bash
-claude --channels plugin lark@lark-mcp-claude
-```
-
-### 4. Configure Credentials
-
-Inside the Claude Code session, run:
-
-```
-/lark-configure <app_id> <app_secret>
-```
-
-Or manually create `~/.claude/channels/lark/.env`:
+Run `/lark-configure` inside the session, or manually create `~/.claude/channels/lark/.env`:
 
 ```
 LARK_APP_ID=cli_xxx
 LARK_APP_SECRET=xxx
 ```
 
+### 4. Launch
+
+```bash
+claude --channels plugin lark@lark-mcp-claude
+```
+
 Send a message to your bot in Lark — it should appear in your Claude Code session.
 
+> **DM messages** are always processed. **Group messages** require @mentioning the bot.
+>
 > **Access control** is managed by the Lark app's own permissions — no separate allowlist needed.
 
 ## Message Flow
 
 ```
-User sends message in Lark
+User sends message in Lark (DM or @mention in group)
   → Bot adds OK reaction
   → Bot creates "Working on it..." card in thread
   → Message forwarded to Claude Code session
