@@ -800,6 +800,13 @@ def _on_lark_message(event: Any) -> None:
         msg_id = message.message_id
         sender_id = event.event.sender.sender_id.open_id
         msg_type = getattr(message, "message_type", "text")
+        chat_type = getattr(message, "chat_type", "p2p")
+
+        # In group chats, only respond when the bot is @mentioned
+        if chat_type == "group":
+            mentions = getattr(message, "mentions", None)
+            if not mentions:
+                return
 
         # Parse text
         text = _parse_message_text(message.content)
