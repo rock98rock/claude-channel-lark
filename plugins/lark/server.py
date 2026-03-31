@@ -132,6 +132,38 @@ api_client = (
 )
 
 # ---------------------------------------------------------------------------
+# Bot identity — resolve the bot's own open_id for @mention detection
+# ---------------------------------------------------------------------------
+
+_BOT_OPEN_ID: str = ""
+
+
+def _resolve_bot_open_id() -> str:
+    """Get the bot's open_id via the Lark bot info API."""
+    try:
+        import lark_oapi as _lark
+        from lark_oapi.api.bot.v3 import GetBotInfoRequest
+
+        req = GetBotInfoRequest.builder().build()
+        resp = api_client.bot.v3.bot_info.get(req)
+        if resp.success() and resp.data and resp.data.bot:
+            oid = getattr(resp.data.bot, "open_id", "") or ""
+            if oid:
+                logger.info("bot open_id resolved: %s", oid)
+                return oid
+        logger.warning(
+            "bot info API returned no open_id (code=%s)", getattr(resp, "code", "?")
+        )
+    except Exception:
+        logger.warning(
+            "failed to resolve bot open_id — group @mention filtering may not work"
+        )
+    return ""
+
+
+_BOT_OPEN_ID = _resolve_bot_open_id()
+
+# ---------------------------------------------------------------------------
 # Card building — interactive cards with markdown
 # ---------------------------------------------------------------------------
 
@@ -808,6 +840,17 @@ def _on_lark_message(event: Any) -> None:
         if chat_type == "group":
             mentions = getattr(message, "mentions", None)
             if not mentions:
+                return
+            bot_mentioned = False
+            for m in mentions:
+                id_obj = getattr(m, "id", None)
+                if id_obj:
+                    open_id = getattr(id_obj, "open_id", "") or ""
+                    if _BOT_OPEN_ID and open_id == _BOT_OPEN_ID:
+                        bot_mentioned = True
+                        break
+            if not bot_mentioned:
+                logger.info("group message without bot @mention, ignoring")
                 return
 
         # Parse text
