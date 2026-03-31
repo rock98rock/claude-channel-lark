@@ -1,5 +1,5 @@
 ---
-name: configure
+name: lark-configure
 description: Set up the Lark channel — save app credentials and review access policy. Use when the user pastes Lark app credentials, asks to configure Lark, asks "how do I set this up" or wants to check channel status.
 user-invocable: true
 allowed-tools:

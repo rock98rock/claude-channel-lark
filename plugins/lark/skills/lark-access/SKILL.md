@@ -1,5 +1,5 @@
 ---
-name: access
+name: lark-access
 description: Manage Lark channel access — edit allowlists and configure delivery settings. Use when the user asks to allow someone, check who's allowed, or change settings for the Lark channel.
 user-invocable: true
 allowed-tools:
