@@ -77,7 +77,7 @@ _load_env_file()
 # Ensure access.json exists — Claude Code requires it for channel approval
 STATE_DIR.mkdir(parents=True, exist_ok=True)
 if not ACCESS_FILE.exists():
-    ACCESS_FILE.write_text('{"allowFrom": []}\n')
+    ACCESS_FILE.write_text('{"dmPolicy": "open", "allowFrom": []}\n')
     logger.info("created %s", ACCESS_FILE)
 
 APP_ID = os.environ.get("LARK_APP_ID", "")
