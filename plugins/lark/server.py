@@ -51,6 +51,7 @@ logger = logging.getLogger("lark-channel")
 STATE_DIR = Path(
     os.environ.get("LARK_STATE_DIR", Path.home() / ".claude" / "channels" / "lark")
 )
+ACCESS_FILE = STATE_DIR / "access.json"
 ENV_FILE = STATE_DIR / ".env"
 INBOX_DIR = STATE_DIR / "inbox"
 
@@ -72,6 +73,12 @@ def _load_env_file() -> None:
 
 
 _load_env_file()
+
+# Ensure access.json exists — Claude Code requires it for channel approval
+STATE_DIR.mkdir(parents=True, exist_ok=True)
+if not ACCESS_FILE.exists():
+    ACCESS_FILE.write_text('{"allowFrom": []}\n')
+    logger.info("created %s", ACCESS_FILE)
 
 APP_ID = os.environ.get("LARK_APP_ID", "")
 APP_SECRET = os.environ.get("LARK_APP_SECRET", "")
