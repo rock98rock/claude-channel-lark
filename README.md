@@ -35,12 +35,11 @@ Lark/Feishu channel plugin for Claude Code. Bridges Lark IM messages to your Cla
 
 ### 2. Install the Plugin
 
-Inside a Claude Code session, run:
+Inside a Claude Code session:
 
-```
-/plugin marketplace add snsoft-my/lark-mcp-claude
-/plugin install lark@snsoft-my-lark-mcp-claude
-```
+1. Open the plugin manager: `/plugin`
+2. Add the marketplace: `/plugin marketplace add snsoft-my/lark-mcp-claude`
+3. Install the plugin: `/plugin install lark@lark-mcp-claude`
 
 ### 3. Configure Credentials
 
