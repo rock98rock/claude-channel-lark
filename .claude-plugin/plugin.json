@@ -1,0 +1,13 @@
+{
+  "name": "lark",
+  "description": "Lark/Feishu channel for Claude Code — receive and reply to Lark messages with threaded replies, running cards, emoji reactions, and file attachments. No public IP required (WebSocket mode).",
+  "version": "0.1.0",
+  "keywords": [
+    "lark",
+    "feishu",
+    "messaging",
+    "channel",
+    "mcp",
+    "chat"
+  ]
+}

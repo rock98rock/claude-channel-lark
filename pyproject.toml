@@ -1,0 +1,9 @@
+[project]
+name = "claude-channel-lark"
+version = "0.1.0"
+description = "Lark channel for Claude Code — messaging bridge via MCP"
+requires-python = ">=3.11"
+dependencies = [
+    "mcp>=1.0",
+    "lark-oapi>=1.3",
+]
