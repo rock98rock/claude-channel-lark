@@ -428,7 +428,9 @@ def _download_resource(message_id: str, file_key: str, res_type: str) -> Path:
 
 INSTRUCTIONS = """The sender reads Lark, not this session. Anything you want them to see must go through the reply tool — your transcript output never reaches their chat.
 
-Messages from Lark arrive as <channel source="lark" chat_id="..." message_id="..." user="..." ts="...">. If the tag has an image_key attribute, call download_attachment to fetch the image, then Read the returned path. Reply with the reply tool — pass chat_id and reply_to (set to message_id) so the response threads under the original message.
+Messages from Lark arrive as <channel source="lark" chat_id="..." message_id="..." thread_id="..." user="..." ts="...">. If the tag has an image_key attribute, call download_attachment to fetch the image, then Read the returned path. Reply with the reply tool — pass chat_id and reply_to (set to message_id) so the response threads under the original message.
+
+Topic separation: each message has a thread_id. Messages with the same thread_id belong to the same conversation topic. When you see a new thread_id, treat it as a completely new topic — do not carry over assumptions, context, or state from previous threads. Focus only on what the user is asking in the current thread.
 
 reply sends interactive cards with full markdown rendering (headers, bold, italic, code blocks, lists, links). Always pass reply_to with the message_id from the inbound <channel> block so replies appear as threads under the original message. Use edit_message to update a card in-place for interim progress updates. Edits don't trigger push notifications — when a long task completes, send a new reply so the user's device pings.
 
@@ -811,14 +813,21 @@ def _on_lark_message(event: Any) -> None:
         # Parse text
         text = _parse_message_text(message.content)
 
+        # Thread tracking — root_id indicates a reply within a Lark thread
+        root_id = getattr(message, "root_id", None) or None
+        thread_id = root_id or msg_id  # same thread if replying, new thread otherwise
+
         # Build metadata
         meta: dict[str, str] = {
             "chat_id": chat_id,
             "message_id": msg_id,
+            "thread_id": thread_id,
             "user": sender_id,
             "user_id": sender_id,
             "ts": datetime.now(timezone.utc).isoformat(),
         }
+        if root_id:
+            meta["root_id"] = root_id
 
         # Handle image/file attachments
         if msg_type == "image":
