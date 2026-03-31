@@ -92,6 +92,45 @@ User sends message in Lark (DM or @mention in group)
 |-------|---------|-------------|
 | lark-configure | `/lark-configure` | Save credentials and check status |
 
+## Standalone MCP Server (Multiple Bots)
+
+You can run the server as a standalone MCP server — outside the plugin system. This lets you connect multiple Lark bots to the same or different Claude Code sessions.
+
+### Add to `.claude/settings.json`
+
+```json
+{
+  "mcpServers": {
+    "lark-bot1": {
+      "command": "uv",
+      "args": ["run", "--directory", "/path/to/claude-channel-lark/plugins/lark", "python", "server.py"],
+      "env": {
+        "LARK_APP_ID": "cli_bot1_app_id",
+        "LARK_APP_SECRET": "bot1_secret",
+        "LARK_STATE_DIR": "~/.claude/channels/lark-bot1"
+      }
+    },
+    "lark-bot2": {
+      "command": "uv",
+      "args": ["run", "--directory", "/path/to/claude-channel-lark/plugins/lark", "python", "server.py"],
+      "env": {
+        "LARK_APP_ID": "cli_bot2_app_id",
+        "LARK_APP_SECRET": "bot2_secret",
+        "LARK_STATE_DIR": "~/.claude/channels/lark-bot2"
+      }
+    }
+  }
+}
+```
+
+Each instance gets its own `LARK_STATE_DIR` for isolated state. All env vars (`LARK_APP_ID`, `LARK_APP_SECRET`, `LARK_DOMAIN`) can be passed directly — no `.env` file needed.
+
+### Or run directly from terminal
+
+```bash
+LARK_APP_ID=cli_xxx LARK_APP_SECRET=xxx uv run --directory /path/to/plugins/lark python server.py
+```
+
 ## Architecture
 
 - **Transport:** MCP over stdio
